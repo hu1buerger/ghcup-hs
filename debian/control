@@ -1,0 +1,45 @@
+Source: ghcup
+Section: devel
+Priority: optional
+Maintainer: Hu1buerger <hu1buerger@gmail.com> # for the deb bundle or ghcup?
+Build-Depends: debhelper-compat (= 13),
+               curl,
+               build-essential,
+               libffi-dev,
+               libgmp-dev,
+               libncurses-dev,
+               pkg-config,
+               zlib1g-dev,
+               libssl-dev,
+               liblzma-dev,
+               libbz2-dev
+Standards-Version: 4.6.2
+Homepage: https://github.com/haskell/ghcup-hs
+Vcs-Git: https://github.com/haskell/ghcup-hs.git
+Vcs-Browser: https://github.com/haskell/ghcup-hs
+Rules-Requires-Root: no
+
+Package: ghcup
+Architecture: any
+Depends: build-essential,
+         curl,
+         libffi8 | libffi7,
+         libffi-dev,
+         libgmp-dev,
+         libgmp10,
+         libncurses-dev,
+         libncurses6 | libncurses5,
+         libtinfo6 | libtinfo5,
+         pkg-config
+Recommends: git
+Suggests: llvm
+Description: GHC toolchain installer
+ GHCup is the main installer for the general purpose language Haskell.
+ .
+ It manages installation of GHC (Glasgow Haskell Compiler), HLS (Haskell
+ Language Server), cabal-install (Haskell build tool), and Stack (Haskell
+ build tool).
+ .
+ GHCup can install multiple versions of each tool and allows switching
+ between them easily. It supports various platforms including Linux,
+ macOS, FreeBSD, and Windows.

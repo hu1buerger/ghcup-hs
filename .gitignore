@@ -16,3 +16,6 @@ TAGS
 release/
 releases/
 site/
+
+.ghcup/
+cabal/

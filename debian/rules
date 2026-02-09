@@ -1,0 +1,29 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	# Use system GHC and cabal from Debian packages
+	#ghc --version
+	#cabal --version
+
+override_dh_auto_build:
+	# Build ghcup binary
+	cabal update
+	cabal build --project-file=cabal.project.release
+
+override_dh_auto_test:
+	# Skip tests for now
+
+override_dh_auto_install:
+	# Get binary location from cabal and install it
+	install -D -m 0755 $$(cabal --project-file=cabal.project.release list-bin ghcup) \
+		debian/ghcup/usr/bin/ghcup
+	# Install system-wide profile script
+	install -D -m 0644 debian/ghcup-profile.sh \
+		debian/ghcup/etc/profile.d/ghcup.sh
+
+override_dh_auto_clean:
+	cabal clean
+	rm -rf dist-newstyle
