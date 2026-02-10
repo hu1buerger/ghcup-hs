@@ -1,0 +1,4 @@
+tar-ignore = "cabal/packages"
+tar-ignore = "dist-newstyle"
+tar-ignore = ".git"
+tar-ignore = ".ghcup"

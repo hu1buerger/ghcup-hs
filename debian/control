@@ -3,12 +3,11 @@ Section: devel
 Priority: optional
 Maintainer: Hu1buerger <hu1buerger@gmail.com> # for the deb bundle or ghcup?
 Build-Depends: debhelper-compat (= 13),
+               pkgconf,
                curl,
-               build-essential,
                libffi-dev,
                libgmp-dev,
                libncurses-dev,
-               pkg-config,
                zlib1g-dev,
                libssl-dev,
                liblzma-dev,
@@ -30,7 +29,7 @@ Depends: build-essential,
          libncurses-dev,
          libncurses6 | libncurses5,
          libtinfo6 | libtinfo5,
-         pkg-config
+         pkgconf
 Recommends: git
 Suggests: llvm
 Description: GHC toolchain installer

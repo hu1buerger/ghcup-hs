@@ -1,0 +1,8 @@
+# Haskell binaries are typically statically linked for portability
+# This is intentional to ensure ghcup works across different distributions
+ghcup: embedded-library bzip2 [usr/bin/ghcup]
+ghcup: embedded-library gmp [usr/bin/ghcup]
+ghcup: embedded-library libyaml [usr/bin/ghcup]
+ghcup: embedded-library ncurses [usr/bin/ghcup]
+ghcup: embedded-library zlib [usr/bin/ghcup]
+ghcup: statically-linked-binary [usr/bin/ghcup]

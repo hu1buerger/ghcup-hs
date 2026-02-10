@@ -1,15 +1,31 @@
 #!/usr/bin/make -f
 
+# Use ghcup installed tools
+export PATH := $(HOME)/.ghcup/bin:$(PATH)
+GHC_VER := 9.6.7
+CABAL_VER := 3.14.1.1
+
+FORCE_GHCUP := 1
+
 %:
 	dh $@
 
 override_dh_auto_configure:
-	# Use system GHC and cabal from Debian packages
-	#ghc --version
-	#cabal --version
+ifeq ($(FORCE_GHCUP), 1)
+		ghcup -v install ghc --set --force ${GHC_VER}
+		ghcup -v install cabal --force ${CABAL_VER}
+endif
 
 override_dh_auto_build:
 	# Build ghcup binary
+	#@[ -f debian/ghcup/usr/bin/ghcup ] && exit 0
+	# we should be able to build for the target architecture, we would need to set up cross-compilation if we wanted to build for a different architecture
+	# thus we would need correctly setup build dependencies (which dosnt seem to work)
+	# but ghc should be able to build for the target architecture, so we can just build it and then copy the binary to the right location
+	# echo DEB_BUILD_ARCH=$(DEB_BUILD_ARCH)
+	# echo DEB_HOST_ARCH=$(DEB_HOST_ARCH)
+	# echo DEB_TARGET_ARCH=$(DEB_TARGET_ARCH)
+
 	cabal update
 	cabal build --project-file=cabal.project.release
 
@@ -25,5 +41,7 @@ override_dh_auto_install:
 		debian/ghcup/etc/profile.d/ghcup.sh
 
 override_dh_auto_clean:
-	cabal clean
-	rm -rf dist-newstyle
+	-cabal clean
+	-rm -rf dist-newstyle/ 
+	-rm -rf cabal/ 
+	# -rm -rf ~/.cabal/
