@@ -34,11 +34,15 @@ jobs:
         with:
           submodules: 'true'
       
-      - name: Set up QEMU for ${{ matrix.arch }}
-        uses: docker/setup-qemu-action@v3
+      - name: Cache dist-newstyle
+        uses: actions/cache@v4
         with:
-          platforms: ${{ matrix.platform }}
-      
+          path: dist-newstyle
+          key: ${{ runner.os }}-${{ matrix.arch }}-ghc-${{ matrix.ghc_ver }}-cabal-${{ env.CABAL_VER }}-${{ hashFiles('**/*.cabal', 'cabal.project*') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.arch }}-ghc-${{ matrix.ghc_ver }}-cabal-${{ env.CABAL_VER }}-
+            ${{ runner.os }}-${{ matrix.arch }}-ghc-${{ matrix.ghc_ver }}-
+
       - name: Setup dependecies
         run: |
           sudo apt-get update
@@ -72,10 +76,10 @@ jobs:
           # for know we are only building the binary package to get it rolling
           debuild -b 
 
-          mkdir -p /out
+          mkdir -p ./out
           #mv ../*.deb /out/ghcup-${{ matrix.arch }}.deb
-          mv ../*.deb /out/
-          mv ../*.changes /out/
+          mv ../*.deb ./out/
+          mv ../*.changes ./out/
 
 
       - name: Upload build artifact
@@ -83,8 +87,8 @@ jobs:
         with:
           name: ghcup-${{ matrix.arch }}
           path: |
-            /out/*.deb 
-            /out/*.changes
+            ./out/*.deb 
+            ./out/*.changes
 
   #release:
   #  name: release
