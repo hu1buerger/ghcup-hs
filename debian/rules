@@ -41,7 +41,7 @@ override_dh_auto_install:
 		debian/ghcup/etc/profile.d/ghcup.sh
 
 override_dh_auto_clean:
-	-cabal clean
-	-rm -rf dist-newstyle/ 
-	-rm -rf cabal/ 
+	#-cabal clean
+	#-rm -rf dist-newstyle/ 
+	#-rm -rf cabal/ 
 	# -rm -rf ~/.cabal/
