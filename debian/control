@@ -3,16 +3,27 @@ Section: devel
 Priority: optional
 Maintainer: Hu1buerger <hu1buerger@gmail.com> # for the deb bundle or ghcup?
 Build-Depends: debhelper-compat (= 13),
-               pkgconf,
-               curl,
-               libffi-dev,
-               libgmp-dev,
-               libncurses-dev,
-               zlib1g-dev,
-               libssl-dev,
-               liblzma-dev,
-               libbz2-dev,
-               zlib1g-dev
+            pkgconf,
+            lsb-release,
+            software-properties-common,
+            curl,
+            libffi-dev,
+            libgmp-dev,
+            libgmp10,
+            libncurses-dev,
+            zlib1g-dev,
+            libssl-dev,
+            liblzma-dev,
+            libbz2-dev,
+            zlib1g-dev,
+            libnuma-dev,
+            gnupg2,
+            apt-transport-https,
+            gcc,
+            autoconf,
+            automake,
+            gzip,
+            libstdc++-11-dev
 Standards-Version: 4.6.2
 Homepage: https://github.com/haskell/ghcup-hs
 Vcs-Git: https://github.com/haskell/ghcup-hs.git

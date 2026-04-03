@@ -47,38 +47,19 @@ jobs:
       - name: Setup dependecies
         run: |
           sudo apt-get update
-          # sudo apt-get install -y --no-install-recommends \
-          sudo apt-get install -y devscripts equivs apt-utils \
+          #  --no-install-recommends 
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y devscripts equivs apt-utils \
             build-essential \
             debhelper-compat \
             devscripts \
             pkgconf \
             curl \
             ca-certificates \
-            # deps?
-            libffi-dev \
-            libgmp-dev \
-            libncurses-dev \
-            zlib1g-dev \
-            libssl-dev \
-            liblzma-dev \
-            libbz2-dev \
-            # more deps?
-            libnuma-dev \
-            libgmp10 \
-            git \
-            wget \
-            lsb-release \
-            software-properties-common \
-            gnupg2 \
-            apt-transport-https \
-            gcc \
-            autoconf \
-            automake \
-            build-essential \
-            curl \
-            gzip \
-            libstdc++-11-dev
+            # from cross.yaml
+            libnuma-dev zlib1g-dev libgmp-dev libgmp10 libssl-dev liblzma-dev libbz2-dev git wget lsb-release software-properties-common gnupg2 apt-transport-https gcc autoconf automake build-essential curl gzip libstdc++-11-dev
+            # deps? \
+            # more deps? \
+            
           
           sudo mk-build-deps -i
 
