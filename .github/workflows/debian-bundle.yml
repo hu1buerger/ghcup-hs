@@ -112,7 +112,8 @@ jobs:
 
   release:
     name: release
-    needs: ["test-linux", "test-arm", "test-macwin", "test-freebsd", "hls"]
+    #needs: ["test-linux", "test-arm", "test-macwin", "test-freebsd", "hls"]
+    needs: ["build-debian"]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
