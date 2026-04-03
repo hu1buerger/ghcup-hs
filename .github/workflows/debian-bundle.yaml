@@ -55,10 +55,8 @@ jobs:
             pkgconf \
             curl \
             ca-certificates \
-            # from cross.yaml
             libnuma-dev zlib1g-dev libgmp-dev libgmp10 libssl-dev liblzma-dev libbz2-dev git wget lsb-release software-properties-common gnupg2 apt-transport-https gcc autoconf automake build-essential curl gzip libstdc++-11-dev
-            # deps? \
-            # more deps? \
+          # from cross.yaml
             
           
           sudo mk-build-deps -i
