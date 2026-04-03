@@ -2,7 +2,7 @@ name: Debian Package Build
 
 on:
   push:
-    branches: [ master, main ]
+    branches: [ master, main , build-apt-package]
     #branches: ["*"]
     tags: [ 'v*' ]
   pull_request:
