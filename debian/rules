@@ -2,18 +2,36 @@
 
 # Use ghcup installed tools
 export PATH := $(HOME)/.ghcup/bin:$(PATH)
+FORCE_GHCUP ?= 1
 GHC_VER := 9.6.7
 CABAL_VER := 3.14.1.1
 
-FORCE_GHCUP := 1
+# Controls for ghcup install flags. Set when invoking make or export in environment.
+# - GHCUP_INSTALL_VERBOSE: 1 to enable -v, 0 to disable
+# - GHCUP_INSTALL_FORCE: 1 to enable --force, 0 to disable
+GHCUP_INSTALL_VERBOSE ?= 0
+GHCUP_INSTALL_FORCE ?= 0
+
+ifeq ($(GHCUP_INSTALL_VERBOSE),1)
+GHCUP_VERBOSE_FLAG := -v
+else
+GHCUP_VERBOSE_FLAG :=
+endif
+
+ifeq ($(GHCUP_INSTALL_FORCE),1)
+GHCUP_FORCE_FLAG := --force
+else
+GHCUP_FORCE_FLAG :=
+endif
 
 %:
 	dh $@
 
 override_dh_auto_configure:
 ifeq ($(FORCE_GHCUP), 1)
-		ghcup -v install ghc --set --force ${GHC_VER}
-		ghcup -v install cabal --force ${CABAL_VER}
+	echo $(FORCE_GHCUP)
+	ghcup $(GHCUP_VERBOSE_FLAG) install ghc --set $(GHCUP_FORCE_FLAG) ${GHC_VER}
+	ghcup $(GHCUP_VERBOSE_FLAG) install cabal $(GHCUP_FORCE_FLAG) ${CABAL_VER}	
 endif
 
 override_dh_auto_build:

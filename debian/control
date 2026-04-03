@@ -11,7 +11,8 @@ Build-Depends: debhelper-compat (= 13),
                zlib1g-dev,
                libssl-dev,
                liblzma-dev,
-               libbz2-dev
+               libbz2-dev,
+               zlib1g-dev
 Standards-Version: 4.6.2
 Homepage: https://github.com/haskell/ghcup-hs
 Vcs-Git: https://github.com/haskell/ghcup-hs.git
@@ -20,16 +21,7 @@ Rules-Requires-Root: no
 
 Package: ghcup
 Architecture: any
-Depends: build-essential,
-         curl,
-         libffi8 | libffi7,
-         libffi-dev,
-         libgmp-dev,
-         libgmp10,
-         libncurses-dev,
-         libncurses6 | libncurses5,
-         libtinfo6 | libtinfo5,
-         pkgconf
+Depends: 
 Recommends: git
 Suggests: llvm
 Description: GHC toolchain installer

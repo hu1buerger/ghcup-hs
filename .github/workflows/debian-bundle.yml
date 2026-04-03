@@ -2,8 +2,8 @@ name: Debian Package Build
 
 on:
   push:
-    #branches: [ master, main ]
-    branches: ["*"]
+    branches: [ master, main ]
+    #branches: ["*"]
     tags: [ 'v*' ]
   pull_request:
     branches: [ master, main ]
@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-debian:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         include:
@@ -42,34 +42,54 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.arch }}-ghc-${{ matrix.ghc_ver }}-cabal-${{ env.CABAL_VER }}-
             ${{ runner.os }}-${{ matrix.arch }}-ghc-${{ matrix.ghc_ver }}-
+      #- uses: haskell-actions/setup@v2
 
       - name: Setup dependecies
         run: |
           sudo apt-get update
           # sudo apt-get install -y --no-install-recommends \
-          sudo apt-get install -y \
+          sudo apt-get install -y devscripts equivs apt-utils \
             build-essential \
             debhelper-compat \
             devscripts \
             pkgconf \
             curl \
             ca-certificates \
+            # deps?
             libffi-dev \
             libgmp-dev \
             libncurses-dev \
             zlib1g-dev \
             libssl-dev \
             liblzma-dev \
-            libbz2-dev
-            
+            libbz2-dev \
+            # more deps?
+            libnuma-dev \
+            libgmp10 \
+            git \
+            wget \
+            lsb-release \
+            software-properties-common \
+            gnupg2 \
+            apt-transport-https \
+            gcc \
+            autoconf \
+            automake \
+            build-essential \
+            curl \
+            gzip \
+            libstdc++-11-dev
+          
+          sudo mk-build-deps -i
+
+          # replace with ghcup in debian/controll in builddeps, but that needs at least one deb release
           curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org \
-            | BOOTSTRAP_HASKELL_NONINTERACTIVE=1 sh
+            | BOOTSTRAP_HASKELL_NONINTERACTIVE=1 BOOTSTRAP_HASKELL_MINIMAL=1 sh
 
       - name: Build Debian package
         run: |
           # alternatively we could also build the debian package in a docker container to have a more clean environment and avoid installing all the dependencies on the runner but for now we are installing them directly on the runner to get it rolling
-          # docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace --platform ${{ matrix.platform }} \
-          # bash -c "cd debian && debuild -b"
+          # docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace --platform ${{ matrix.platform }} bash -c "cd debian && debuild -b"
           
           # Build the Debian package without signing 
           # TODO: Add -uc -us (unsigned source and usigned changes and later sign them) 
@@ -85,28 +105,28 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ghcup-${{ matrix.arch }}
+          name: artifacts-${{ matrix.arch }}
           path: |
             ./out/*.deb 
             ./out/*.changes
 
-  #release:
-  #  name: release
-  #  needs: ["test-linux", "test-arm", "test-macwin", "test-freebsd", "hls"]
-  #  runs-on: ubuntu-latest
-  #  if: startsWith(github.ref, 'refs/tags/v')
-  #  steps:
-  #    - name: Download artifacts
-  #      uses: actions/download-artifact@v4
-  #      with:
-  #        pattern: artifacts-*
-  #        merge-multiple: true
-  #        path: ./out
-  #
-  #    - name: Release
-  #      uses: softprops/action-gh-release@v1
-  #      with:
-  #        draft: true
-  #        files: |
-  #          ./out/*
-  #
+  release:
+    name: release
+    needs: ["test-linux", "test-arm", "test-macwin", "test-freebsd", "hls"]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: artifacts-*
+          merge-multiple: true
+          path: ./out
+  
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          files: |
+            ./out/*
+  
