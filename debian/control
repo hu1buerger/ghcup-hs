@@ -23,7 +23,8 @@ Build-Depends: debhelper-compat (= 13),
             autoconf,
             automake,
             gzip,
-            libstdc++-11-dev
+            libstdc++-11-dev,
+            libarchive-dev
 Standards-Version: 4.6.2
 Homepage: https://github.com/haskell/ghcup-hs
 Vcs-Git: https://github.com/haskell/ghcup-hs.git

@@ -37,7 +37,11 @@ jobs:
       - name: Cache dist-newstyle
         uses: actions/cache@v4
         with:
-          path: dist-newstyle
+          #path: dist-newstyle
+          path: |
+            ~/.cabal/packages
+            ~/.cabal/store
+            dist-newstyle
           key: ${{ runner.os }}-${{ matrix.arch }}-ghc-${{ matrix.ghc_ver }}-cabal-${{ env.CABAL_VER }}-${{ hashFiles('**/*.cabal', 'cabal.project*') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.arch }}-ghc-${{ matrix.ghc_ver }}-cabal-${{ env.CABAL_VER }}-
